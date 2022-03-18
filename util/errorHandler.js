@@ -1,23 +1,27 @@
 const SendErrorDev = (error, res) => {
-  res.status(error.statusCode).json({
+  return res.status(error.statusCode).json({
     status: error.status,
-    message: error.message,
-    error: error,
-    stack: error.stack,
+    data: {
+      message: error.message,
+      stack: error.stack,
+    },
   });
 };
 
 SendErrorProdu = (error, res) => {
   if (err.isOperational) {
-    res.status(error.statusCode).json({
+    return res.status(error.statusCode).json({
       status: error.status,
-      message: error.message,
+      data: {
+        message: error.message,
+      },
     });
   } else {
-    console.error("Error", err);
-    res.status(500).json({
+    return res.status(error.statusCode).json({
       status: "error",
-      message: "Something went very wrong!",
+      data: {
+        message: "Una operacion no se pudo ejecutar",
+      },
     });
   }
 };
@@ -28,7 +32,7 @@ module.exports = (error, req, res, next) => {
 
   if (process.env.NODE_ENV === "develoment") {
     SendErrorDev(error, res);
-  } else if (process.env.NODE_ENV === "production") {
+  } else {
     SendErrorProdu(error, res);
   }
 };

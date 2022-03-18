@@ -33,13 +33,12 @@ app.use(questionnaireRoute);
 app.use(recomendationRouter);
 app.use(ruleRouter);
 app.use(gradeRecomendationRouter);
+app.use(errorHandler);
 
 app.all("*", (req, res, next) => {
   const errMessage = `Can't find ${req.originalUrl} on this servers`;
   next(new AppError(errMessage, 404));
 });
-
-app.use(errorHandler);
 
 const server = app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
